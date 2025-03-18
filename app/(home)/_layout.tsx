@@ -2,12 +2,11 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { router, Stack } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-type Props = {};
-
-const HomeRoot = (props: Props) => {
+const HomeRoot = () => {
   return (
     <Stack screenOptions={{ animation: "fade" }}>
       <Stack.Screen name="index" options={{ title: "Shop" }} />
+      <Stack.Screen name="3d-view" />
       <Stack.Screen
         name="product/[id]"
         options={{

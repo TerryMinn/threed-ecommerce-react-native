@@ -35,6 +35,7 @@ const RooyLayout = () => {
             title: "Home",
           }}
         />
+
         <Tabs.Screen
           name="profile"
           options={{

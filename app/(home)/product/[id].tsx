@@ -1,22 +1,24 @@
-import { SafeAreaView, StyleSheet, Text, View, ScrollView } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { getProduct } from "@/service/product.service";
 import StartCount from "@/components/start-count";
 import Counter from "@/components/counter";
 import { COLOR } from "@/constants/Colors";
 import { SIZE } from "@/constants/Size";
-import Animated, {
-  FadeInLeft,
-  FadeInRight,
-  FadeOutLeft,
-} from "react-native-reanimated";
+import Animated, { FadeInLeft, FadeInRight } from "react-native-reanimated";
 import AddButton from "@/components/button/add-button";
+import Fontisto from "@expo/vector-icons/Fontisto";
 
-type Props = {};
-
-const Product = (props: Props) => {
+const Product = () => {
   const { id } = useLocalSearchParams();
   const { data, isLoading } = useQuery({
     queryKey: ["product", id],
@@ -58,6 +60,12 @@ const Product = (props: Props) => {
             sharedTransitionTag={`tag${id}`}
             source={{ uri: PRODUCT?.image }}
           />
+          <TouchableOpacity
+            onPress={() => router.push(`/(home)/3d-view/${id}`)}
+            style={styles.view_in_threed}
+          >
+            <Fontisto name="world-o" size={24} color="black" />
+          </TouchableOpacity>
         </View>
 
         <View style={styles.content_container}>
@@ -151,6 +159,11 @@ const Product = (props: Props) => {
 export default Product;
 
 const styles = StyleSheet.create({
+  view_in_threed: {
+    position: "absolute",
+    right: 10,
+    top: 10,
+  },
   container: {
     flex: 1,
   },
@@ -166,6 +179,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   image_container: {
+    position: "relative",
     marginTop: 10,
     backgroundColor: "white",
     padding: 10,
