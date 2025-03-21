@@ -5,8 +5,9 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  Image,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { getProduct } from "@/service/product.service";
@@ -17,6 +18,7 @@ import { SIZE } from "@/constants/Size";
 import Animated, { FadeInLeft, FadeInRight } from "react-native-reanimated";
 import AddButton from "@/components/button/add-button";
 import Fontisto from "@expo/vector-icons/Fontisto";
+import Loading from "@/components/loading";
 
 const Product = () => {
   const { id } = useLocalSearchParams();
@@ -195,6 +197,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     width: "90%",
+    height: 50,
   },
   price_container: {
     flexDirection: "row",
@@ -224,6 +227,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 500,
     color: "#525252",
+    height: 50,
   },
   variants_container: {
     marginTop: 20,
