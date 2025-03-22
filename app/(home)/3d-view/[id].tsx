@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Camera,
   DefaultLight,
@@ -13,13 +13,15 @@ import {
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
 import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
-import { useSharedValue } from "react-native-worklets-core";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 
-import { Asset } from "expo-asset";
 import { AntDesign } from "@expo/vector-icons";
-
-// Function to dynamically load the model
+import {
+  Easing,
+  withTiming,
+  useSharedValue,
+  useDerivedValue,
+} from "react-native-reanimated";
 
 const getModelSource = (id: string) => {
   switch (id) {
@@ -67,7 +69,17 @@ const getModelSource = (id: string) => {
       return require("../../../assets/model/1.glb");
   }
 };
+
 function Scene() {
+  const rotation = useSharedValue(180);
+
+  useEffect(() => {
+    rotation.value = withTiming(0, {
+      duration: 1000,
+      easing: Easing.out(Easing.exp),
+    });
+  }, []);
+
   const { id } = useLocalSearchParams();
   const cameraManipulator = useCameraManipulator({
     orbitHomePosition: [0, 0, 8],
@@ -103,13 +115,27 @@ function Scene() {
     });
   const combinedGesture = Gesture.Race(pinchGesture, panGesture);
 
+  // Use useDerivedValue to observe changes in rotation.value
+  useDerivedValue(() => {
+    console.log(rotation.value, "hello animation");
+  });
+
+  // Apply rotation to the model
+  const modelRotation = useDerivedValue(() => {
+    return [0, rotation.value, 0]; // Rotate around the Y-axis
+  });
+
   return (
     <GestureDetector gesture={combinedGesture}>
       <FilamentView style={styles.container}>
         <Camera cameraManipulator={cameraManipulator} />
         <DefaultLight />
 
-        <Model source={getModelSource(id as string)} transformToUnitCube />
+        <Model
+          source={getModelSource(id as string)}
+          transformToUnitCube
+          rotation={modelRotation.value} // Apply rotation here
+        />
       </FilamentView>
     </GestureDetector>
   );

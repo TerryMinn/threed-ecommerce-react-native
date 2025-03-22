@@ -18,7 +18,6 @@ import { SIZE } from "@/constants/Size";
 import Animated, { FadeInLeft, FadeInRight } from "react-native-reanimated";
 import AddButton from "@/components/button/add-button";
 import Fontisto from "@expo/vector-icons/Fontisto";
-import Loading from "@/components/loading";
 
 const Product = () => {
   const { id } = useLocalSearchParams();
